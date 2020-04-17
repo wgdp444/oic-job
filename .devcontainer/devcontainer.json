@@ -1,13 +1,16 @@
 {
-	"name": "Remote Container Template",
+	"name": "Working Container",
 	"dockerComposeFile": [
 	   "docker-compose.yml"
-	 ],
-	 "service": "flask",
-	 "shutdownAction": "stopCompose",
-	 "workspaceFolder": "/workspace",
-	 "extensions": [
-	 "ms-python.python"
-	 ],
-	 "postCreateCommand": "pip install -r requirements.txt"
+	],
+	"service": "web",
+	"shutdownAction": "stopCompose",
+	"workspaceFolder": "/workspace",
+	"extensions": [
+	"ms-python.python"
+	],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	//  "postCreateCommand": "export PS1=\"\\s:\\w# \""
  }

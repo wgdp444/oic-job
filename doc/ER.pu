@@ -1,0 +1,76 @@
+@startuml ER図
+entity "User" {
+    *id:int
+    --
+    *google_id:text
+    *created:datetime
+    *update:datetime
+    *subject_id:[FK(Subject, id)]
+    *class:int
+    *is_admin:bool
+    *favorate_job_offer:[FK(FavorateJobOffer, id)]
+}
+entity "Subject" {
+    *id:int
+    --
+    *user_id:FK(User, id)
+    *subject_name:nvarchar(20)
+    *created:datetime
+    *update:datetime
+}
+entity "FavorateJobOffer" {
+    *id:int
+    --
+    *user_id:FK(User, id)
+    *job_offer_id:FK(JobOffer, id)
+    *created:datetime
+    *update:datetime
+}
+entity "JobOffer" {
+    *id:int
+    --
+    *company:FK(Company, id)
+    *occupation:int
+    *max_applicants:int
+    *min_applicants:int
+    *starting_salary:nvarchar(20)
+    *image_url:text
+    *created:datetime
+    *update:datetime
+}
+entity "Company" {
+    *id:int
+    --
+    *company_name:nvarchar(40)
+    *industry:FK(Industry, id)
+    *postal_code:varchar(7)
+    *main_street_address:FK(CompanyStreetAddress, id)
+    *sub_street_address:FK(CompanyStreetAddress, id)
+    *created:datetime
+    *update:datetime
+}
+entity "CompanyStreetAddress" {
+    *id:int
+    --
+    *company:FK(Company, id)
+    *street_address:text
+    *is_main:bool
+    *created:datetime
+    *update:datetime
+}
+entity "Industry" {
+    *id:int
+    --
+    *industry_name:nvarchar(40)
+    *created:datetime
+    *update:datetime
+}
+
+CompanyStreetAddress }|--|| Company
+Industry }|--o{ Company
+User ||--o{ FavorateJobOffer
+User }|--|| Subject
+JobOffer ||--o{ FavorateJobOffer
+JobOffer }o--|| Company
+
+@enduml

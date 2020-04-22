@@ -1,2 +1,4 @@
 *.code-workspace
 .DS_Store
+backend_test/
+frontend/

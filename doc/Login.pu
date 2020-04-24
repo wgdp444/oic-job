@@ -1,0 +1,23 @@
+@startuml
+actor ユーザーの皆様 #blue
+participant VueApp
+participant GoogleServer
+participant RestAPI
+database DB
+ユーザーの皆様 -> VueApp: 1.ログインボタン押下
+VueApp -> GoogleServer: 2.Googleのログインページにリダイレクト
+GoogleServer -> ユーザーの皆様: 3.ログイン要求
+ユーザーの皆様 -> GoogleServer: 4.ログイン
+GoogleServer -> VueApp: 5.token返却
+VueApp -> RestAPI: 6.tokenを送信(POST)
+RestAPI -> GoogleServer: 7.GoogleAPIを叩いてtokenを照合
+GoogleServer -> RestAPI: 8.照合結果を返却
+RestAPI -> DB: 9.ユーザーIDをキーにユーザーが存在するかをチェック
+DB -> RestAPI: 10.検索結果を返却
+RestAPI -> VueApp: 11-1.存在しない場合登録画面にリダイレクト
+VueApp -> ユーザーの皆様: 11-2.ユーザー情報入力を要求
+ユーザーの皆様 -> VueApp: 11-3.ユーザー情報入力完了
+VueApp -> RestAPI: 11-4.ユーザー登録APIをたたく
+RestAPI -> DB: 11-5.ユーザー名、email、ユーザーIDでユーザーデータ登録
+RestAPI -> VueApp: 12.トップページにリダイレクト
+@enduml

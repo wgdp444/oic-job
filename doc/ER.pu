@@ -1,73 +1,83 @@
 @startuml ER図
 entity "User" {
-    *id:int
+    *user_id:bigint
     --
-    *google_id:text
     *created:datetime
-    *update:datetime
+    *updated:datetime
     *subject_id:[FK(Subject, id)]
     *class:int
     *is_admin:bool
-    *favorate_job_offer:[FK(FavorateJobOffer, id)]
+    *created_by:nvarchar(16)
+    *updated_by:nvarchar(16)
 }
 entity "Subject" {
-    *id:int
+    *subject_id:int
     --
     *user_id:FK(User, id)
     *subject_name:nvarchar(20)
     *created:datetime
-    *update:datetime
+    *updated:datetime
+    *created_by:nvarchar(16)
+    *updated_by:nvarchar(16)
 }
-entity "FavorateJobOffer" {
-    *id:int
+entity "FavoriteJobOffer" {
+    *favorite_job_offer_id:int
     --
     *user_id:FK(User, id)
     *job_offer_id:FK(JobOffer, id)
     *created:datetime
-    *update:datetime
+    *updated:datetime
+    *created_by:nvarchar(16)
+    *updated_by:nvarchar(16)
 }
 entity "JobOffer" {
-    *id:int
+    *job_offer_id:int
     --
-    *company:FK(Company, id)
-    *occupation:int
+    *company_id:FK(Company, id)
+    *occupation:nvarchar(40)
     *max_applicants:int
     *min_applicants:int
-    *starting_salary:nvarchar(20)
+    *starting_salary:int
     *image_url:text
     *created:datetime
-    *update:datetime
+    *updated:datetime
+    *created_by:nvarchar(16)
+    *updated_by:nvarchar(16)
 }
 entity "Company" {
-    *id:int
+    *company_id:int
     --
     *company_name:nvarchar(40)
-    *industry:FK(Industry, id)
+    *industry_id:FK(Industry, id)
     *postal_code:varchar(7)
-    *main_street_address:FK(CompanyStreetAddress, id)
-    *sub_street_address:FK(CompanyStreetAddress, id)
     *created:datetime
-    *update:datetime
+    *updated:datetime
+    *created_by:nvarchar(16)
+    *updated_by:nvarchar(16)
 }
 entity "CompanyStreetAddress" {
-    *id:int
+    *company_street_address_id:int
     --
-    *company:FK(Company, id)
+    *company_id:FK(Company, id)
     *street_address:text
     *is_main:bool
     *created:datetime
-    *update:datetime
+    *updated:datetime
+    *created_by:nvarchar(16)
+    *updated_by:nvarchar(16)
 }
 entity "Industry" {
-    *id:int
+    *industry_id:int
     --
     *industry_name:nvarchar(40)
     *created:datetime
-    *update:datetime
+    *updated:datetime
+    *created_by:nvarchar(16)
+    *updated_by:nvarchar(16)
 }
 
 CompanyStreetAddress }|--|| Company
-Industry }|--o{ Company
+Industry ||--o{ Company
 User ||--o{ FavorateJobOffer
 User }|--|| Subject
 JobOffer ||--o{ FavorateJobOffer

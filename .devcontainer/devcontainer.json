@@ -7,7 +7,8 @@
 	"shutdownAction": "stopCompose",
 	"workspaceFolder": "/workspace",
 	"extensions": [
-	"ms-python.python"
+	"ms-python.python",
+	"octref.vetur"
 	],
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/bash"

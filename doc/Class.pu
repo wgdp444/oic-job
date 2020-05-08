@@ -1,0 +1,151 @@
+@startuml クラス図
+package "Vue.js"{
+    package "View"{
+        class Login{
+            * GetUserByGoogleToken()
+            --
+        }
+        class CreateAccount{
+            * createUser()
+            --
+        }
+    }
+}
+
+package "Django"{
+    package "Model"{
+        class User{
+            * user_id:bigint
+            * created:datetime
+            * updated:datetime
+            * subject_id:[FK(Subject,id)]
+            * class:int
+            * is_admin:bool
+            * favorate_job_offer:[FK(FavoreteJobOffer,id)]
+            * created_by:nvarchar(16)
+            * updated_by:nvarchar(16)
+            --
+        }
+        class Subject {
+            * subject_id:int
+            * user_id:FK(User,id)
+            * subject_name:nvarchar(20)
+            * created:datatime
+            * updated:datetime
+            * created_by:nvarchar(16)
+            * updated_by:nvarchar(16)
+            --
+        }
+        class FavoriteJobOffer{
+            * favorite_job_offer_id:int
+            * user_id:FK(User,id)
+            * job_offer_id:FK(JobOffer,id)
+            * created:datatime
+            * updated:datatime
+            * created_by:nvarchar(16)
+            * updated_by:nvarchar(16)
+            --
+        }
+        class JobOffer{
+            * job_offer_id:int
+            * company:FK(Company,id)
+            * occupation:int
+            * max_applicants:int
+            * min_applicants:int
+            * staring_salary:nvarchar
+            * image_url:text
+            * create:datetime
+            * updated:datetime
+            * created_by:nvarchar(16)
+            * updated_by:nvarchar(16)
+            --
+        }
+        class Company{
+            * company_id:int
+            * company_name:nvarchar(40)
+            * iddustry:FK(industry,id)
+            * postal_code:varchar(7)
+            * main_street_address:FK(CompanyStreetAddress,id)
+            * sub_street_address:FK(CompanyStreetAddress,id)
+            * created:datetime
+            * updated:datetime
+            * created_by:nvarchar(16)
+            * updated_by:nvarchar(16)
+            --
+        }
+        class CompanyStreetAddress{
+            * company_street_address_id:int
+            * company:FK(Company,id)
+            * street_address:text
+            * is_main:bool
+            * created:datetime
+            * updated:datetime
+            * created_by:nvarchar(16)
+            * updated_by:nvarchar(16)
+            --
+        }
+        class Industry{
+            * industry_id:int
+            * industry_name:nvarchar(40)
+            * created:datetime
+            * updated:datetime
+            * created_by:nvarchar(16)
+            * updated_by:nvarchar(16)
+            --
+        }
+    }
+    package "Controller"{
+        class UserController{
+            * InsertUser()
+            * FindUserById()
+            * updatedUser()
+            * DeleteUser()
+        }
+        class SubjectController{
+            * InsertSubject()
+            * FindSubjectById()
+            * updatedSubject()
+            * DeleteSubject()
+        }
+        class JobOfferController{
+            * InsertJobOffer()
+            * FindJobOfferById()
+            * updatedJobOffer()
+            * DeleteJobOffer()
+        }
+        class CompanyController{
+            * InsertCompany()
+            * FindCompanyById()
+            * updatedCompany()
+            * DeleteCompany()
+        }
+        class FavoreteJobOfferController{
+            * InsertFavoreteJobOffer()
+            * FindFavoreteJobOfferById()
+            * updatedFavoreteJobOffer()
+            * DeleteFavoreteJobOffer()
+        }
+        class IndustryController{
+            * InsertIndustry()
+            * FindIndustryById()
+            * updatedIndustry()
+            * DeleteIndustry()
+        }
+        class CompanyStreetAddressController{
+            * InsertCompanyStreetAddress()
+            * FindCompanyStreetAddressById()
+            * updatedCompanyStreetAddress()
+            * DeleteCompanyStreetAddress()
+        }
+    }
+
+}
+
+' View -> Controller
+Login -> UserController
+CreateAccount -> UserController
+
+' Controller -> Model
+UserController -> User
+UserController -> User
+@enduml

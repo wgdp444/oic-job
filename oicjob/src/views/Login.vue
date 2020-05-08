@@ -27,6 +27,7 @@
 // @ is an alias to /src
 // import HeaderItem from '@/components/HeaderItem.vue'
 import GoogleLogin from "vue-google-login";
+
 export default {
   name: "Login",
   data() {
@@ -46,16 +47,25 @@ export default {
   },
   methods: {
     onSuccess: function(googleUser) {
-      var profile = googleUser.getBasicProfile();
-      console.log("ID: " + profile.getId());
-      console.log("Name: " + profile.getName());
-      console.log("Image URL: " + profile.getImageUrl());
-      console.log("Email: " + profile.getEmail());
-      this.$router.replace('/create_account')
+      // var profile = googleUser.getBasicProfile();
+      // console.log("ID: " + profile.getId());
+      // console.log("Name: " + profile.getName());
+      // console.log("Image URL: " + profile.getImageUrl());
+      // console.log("Email: " + profile.getEmail());
+      this.$axios
+        .post("/oicjob/api/oauth/login", {
+          id_token: googleUser.getAuthResponse().id_token
+        })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      // this.$router.replace("/create_account");
     },
     onFailure: function() {
-        console.log("failed...");
-         this.$router.replace('/create_account')
+      console.log("failed...");
     }
   }
 };

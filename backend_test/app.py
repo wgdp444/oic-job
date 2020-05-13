@@ -9,22 +9,35 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/oicjob/api/oauth/login',methods=["POST"])
-def test():
-    print(request.headers['Content-Type'])
-    if request.headers['Content-Type'] != 'application/json;charset=UTF-8':
-        print(request.headers['Content-Type'])
-        return "dame"
+def google_aouth(token):
     try:
-        data = request.get_json()
-        idinfo = id_token.verify_oauth2_token(data['id_token'], requests.Request(), os.getenv("CLIENT_ID"))
-
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(), os.getenv("CLIENT_ID"))
+        print(idinfo)
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('しっぱいしたんだが？？？？？')
-        print(idinfo)
-        return 'ok'
+        return idinfo
     except ValueError as e:
         print(e)
+        return None
+
+
+@app.route('/oicjob/api/login',methods=["POST"])
+def login():
+    # print(request.headers)
+    print(request.headers['Authorization'].split()[1])
+    if request.headers['Content-Type'].lower() != 'application/json;charset=utf-8':
         return "dame"
+    idinfo = google_aouth(request.headers['Authorization'].split()[1])
+    if idinfo  is None:
+        return "dame"
+    return "ok"
+
+@app.route('/oicjob/api/userinfo',methods=["GET"])
+def get_user():
+    idinfo = google_aouth(request.headers['Authorization'].split()[1])
+    if idinfo  is None:
+        return "dame"
+
+    
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

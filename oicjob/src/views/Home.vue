@@ -1,17 +1,55 @@
 <template>
   <v-content>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HeaderItem/>
+    <v-container class="fill-height" fluid>
+      <v-card
+    class="mx-auto"
+    max-width="344"
+  >
+      <v-text-field
+            value="John Doe"
+            label="Outlined"
+            outlined
+            readonly
+            append_icon="place"
+          ></v-text-field>
+          <v-text-field
+            filled
+            label="Prepend inner"
+            prepend-inner-icon="place"
+          ></v-text-field>
+          <v-icon>fas fa-search</v-icon>
+      </v-card>
+      <v-text-field
+            v-model="message1"
+            label="Regular"
+            clearable
+          ></v-text-field>
+          <v-text-field
+            label="Prepend inner"
+            prepend-inner-icon="place"
+          ></v-text-field><v-text-field
+            filled
+            label="Prepend inner"
+            prepend-inner-icon="place"
+          ></v-text-field>
+          <v-icon>fas fa-search</v-icon>
+          <v-icon>fas fa-search</v-icon>
+          <v-icon>fas fa-search</v-icon>
+          <v-icon>fas fa-search</v-icon>
+          <v-icon>fas fa-search</v-icon>
+    </v-container>
   </v-content>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HeaderItem from '../components/HeaderItem'
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    HelloWorld,
+    HeaderItem
   }
-}
+};
 </script>

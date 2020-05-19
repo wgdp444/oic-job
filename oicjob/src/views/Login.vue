@@ -74,10 +74,10 @@ export default {
     test: function() {
       Vue.GoogleAuth.then(auth2 => {
         console.log(auth2.isSignedIn.get());
-        if (auth2.isSignedIn.get()) {
+        // if (auth2.isSignedIn.get()) {
           let user = auth2.currentUser.get();
           console.log(user.getBasicProfile());
-        }
+        // }
       });
     }
   }

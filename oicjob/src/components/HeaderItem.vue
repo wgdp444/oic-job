@@ -76,6 +76,7 @@ export default {
         auth2.signOut()
     })
       this.$router.replace("/login");
+      this.$router.go({path: this.$router.currentRoute.path, force: true});
     }
   }
 };

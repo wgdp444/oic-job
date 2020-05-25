@@ -34,10 +34,20 @@ def test2():
         print(request.headers['Content-Type'])
         return "dame"
     try:
-        data = request.get_json()
         return 'ok'
     except ValueError as e:
         print(e)
         return "dame"
+
+@app.route('/oicjob/api/getsubject',methods=["GET"])
+def test3():
+    test5 = ["情報スペシャリスト","情報システム","ゲームクリエイター","医療福祉事務","診療情報管理士","ホテル・ブライダル","経営アシスト","公務員","保育"]
+    return jsonify(test5)
+@app.route('/oicjob/api/getclass',methods=["GET"])
+def test4():
+    test6 = ["なし","1","2","3","4"]
+    return jsonify(test6)
+
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

@@ -10,7 +10,7 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-select
             v-model="subjectSelect"
-            :items="subjectItems"
+            :items="subjectList"
             :rules="[v => !!v || '選択してください']"
             label="学科"
             required
@@ -18,7 +18,7 @@
 
           <v-select
             v-model="classSelect"
-            :items="classItems"
+            :items="classList"
             :rules="[v => !!v || '選択してください']"
             label="クラス"
             required
@@ -45,27 +45,21 @@ import HeaderItem from '../components/HeaderItem'
 
 export default {
   data: () => ({
+    subjectList: [],
+    classList: [],
     valid: true,
     classSelect:null,
-    classItems:[
-      '1',
-      '2',
-      '3'
-    ],
     subjectSelect:null,
-    subjectItems:[
-      '情スぺ',
-      
-    ],
-    required: value => !!value || "必ず選択"
   }),
   methods:{
+    //入力チェック
     validate () {
         if(this.$refs.form.validate()){
           this.$axios
           .post("/oicjob/api/create_account",{
             classData: 'classSelect',
-            subjectData: 'subjectSelect'
+            subjectData: 'subjectSelect',
+
           })
           .then(response => {
           console.log(response.data);
@@ -73,13 +67,35 @@ export default {
           .catch(err => {
           console.log(err);
           });
-         // location.href = "/"
+          location.href = "/"
         }
       },
   },
+    mounted:function() {
+      //学科データ取得
+      this.$axios.get('/oicjob/api/getsubject')
+      .then(response => {
+       // console.log(response.data)
+        this.subjectList = response.data;
+      })
+      .catch( err => {
+        console.log(err);
+      });
+    //クラスデータ取得
+      this.$axios.get('/oicjob/api/getclass')
+      .then(response => {
+        //console.log(response.data)
+        this.classList = response.data;
+      })
+      .catch( err => {
+        console.log(err);
+      });
+    },
+  
   name: "CreateAccount",
   components: {
     HeaderItem
   }
+
 };
 </script>

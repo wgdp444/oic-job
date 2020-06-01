@@ -55,10 +55,8 @@ export default {
       // console.log("Image URL: " + profile.getImageUrl());
       // console.log("Email: " + profile.getEmail());
       this.$axios
-        .post("/oicjob/api/login", null, {
-          headers: {
-            Authorization: `Bearer ${googleUser.getAuthResponse().id_token}`
-          }
+        .post("/oicjob/api/login", {
+          "token": googleUser.getAuthResponse().id_token
         })
         .then(response => {
           console.log(response.data);

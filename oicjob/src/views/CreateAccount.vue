@@ -55,11 +55,11 @@ export default {
     //入力チェック
     validate () {
         if(this.$refs.form.validate()){
+          
           this.$axios
           .post("/oicjob/api/create_account",{
             classData: 'classSelect',
             subjectData: 'subjectSelect',
-
           })
           .then(response => {
           console.log(response.data);
@@ -73,19 +73,10 @@ export default {
   },
     mounted:function() {
       //学科データ取得
-      this.$axios.get('/oicjob/api/getsubject')
+      this.$axios.post('/oicjob/api/get_subject_all')
       .then(response => {
-       // console.log(response.data)
+        console.log(response.data)
         this.subjectList = response.data;
-      })
-      .catch( err => {
-        console.log(err);
-      });
-    //クラスデータ取得
-      this.$axios.get('/oicjob/api/getclass')
-      .then(response => {
-        //console.log(response.data)
-        this.classList = response.data;
       })
       .catch( err => {
         console.log(err);

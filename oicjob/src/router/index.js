@@ -11,17 +11,18 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {isPublic: true},
   },
   {
     path: '/create_account',
     name: 'CreateAccount',
-    component: CreateAccount
+    component: CreateAccount,
   }
 ]
 
@@ -30,5 +31,16 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(1)
+  Vue.GoogleAuth.then(auth2 => {
+    if (to.matched.some(record => !record.meta.isPublic) && !auth2.isSignedIn.get()) {
+      next({ path: '/login', query: { redirect: to.fullPath }});
+    } else {
+      next();
+    }
+  });
+});
 
 export default router

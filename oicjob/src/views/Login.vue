@@ -59,12 +59,16 @@ export default {
           "token": googleUser.getAuthResponse().id_token
         })
         .then(response => {
-          console.log(response.data);
+          if (response.data['result'] == "account found") {
+            this.$router.replace("/");
+          }  else if (response.data['result'] == "account not found") {
+            this.$router.replace("/create_account");
+          }
         })
         .catch(err => {
           console.log(err);
         });
-      this.$router.replace("/");
+      // this.$router.replace("/");
     },
     onFailure: function(googleUser) {
       console.log(googleUser.getAuthResponse().id_token);

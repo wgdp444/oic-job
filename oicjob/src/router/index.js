@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import CreateAccount from '../views/CreateAccount.vue'
+import VerboseScreen from '../views/VerboseScreen.vue'
+import Edit from '../views/Edit.vue'
 // import HeaderItem from '../components/HeaderItem.vue'
 
 Vue.use(VueRouter)
@@ -22,7 +24,17 @@ Vue.use(VueRouter)
   {
     path: '/create_account',
     name: 'CreateAccount',
-    component: CreateAccount,
+    component: CreateAccount
+  },
+  {
+    path: '/verbose_screen',
+    name: 'VerboseScreen',
+    component: VerboseScreen
+  },
+  {
+    path: '/edit',
+    name: 'Edit',
+    component: Edit
   }
 ]
 

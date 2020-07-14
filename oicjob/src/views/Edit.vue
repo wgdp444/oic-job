@@ -46,7 +46,7 @@ export default {
     
   }),
 
-  name: "Home",
+  name: "Edit",
   components: {
     HeaderItem
   }

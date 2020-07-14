@@ -81,7 +81,7 @@ export default {
     
   }),
 
-  name: "Home",
+  name: "VerboseSdreen",
   components: {
     HeaderItem
   }

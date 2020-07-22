@@ -16,10 +16,10 @@
                 </v-col>
                 <v-col cols="12" sm="5" md="5"></v-col>
                 <v-col cols="12" sm="2" md="2" align="center">
-                    <v-btn width="80%" color="#76FF03">編集</v-btn>
+                    <v-btn width="80%" color="secondary">編集</v-btn>
                 </v-col>
                 <v-col cols="12" sm="2" md="2" align="center">
-                    <v-btn width="80%" color="#F50057">削除</v-btn>
+                    <v-btn width="80%" color="error">削除</v-btn>
                 </v-col>
             </v-row>
         </v-container>

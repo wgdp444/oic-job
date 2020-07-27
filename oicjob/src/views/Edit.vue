@@ -118,7 +118,7 @@
 
                 <v-row class="mt-12">
                   <v-col cols="12" sm="2" md="2" align="center">
-                    <v-btn width="80%" color="primary">戻る</v-btn>
+                    <v-btn width="80%" color="primary" @click="(data) => { $router.push(`/verbose_screen`) }">戻る</v-btn>
                   </v-col>
                   <v-col cols="12" sm="2" md="2" align="center" class="offset-6">
                     <v-btn width="80%" color="#cccccc">キャンセル</v-btn>

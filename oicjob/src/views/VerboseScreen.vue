@@ -14,12 +14,15 @@
                 <v-col cols="12" sm="3" md="3">
                     <h1 class="mt-2" style="color: white">株式会社Daizo</h1>
                 </v-col>
-                <v-col cols="12" sm="5" md="5"></v-col>
-                <v-col cols="12" sm="2" md="2" align="center">
-                    <v-btn width="80%" color="#76FF03">編集</v-btn>
+                <v-col cols="12" sm="1" md="1" class="offset-6">
+                  <v-btn width="100%" color="white" @click="(data) => { $router.push(`/`) }" style="font-weight: bold">ホームへ</v-btn>
                 </v-col>
-                <v-col cols="12" sm="2" md="2" align="center">
-                    <v-btn width="80%" color="#F50057">削除</v-btn>
+                <v-col cols="12" sm="1" md="1" align="center">
+                    <v-btn width="100%" color="#76FF03" @click="(data) => { $router.push(`/edit`) }" style="font-weight: bold">編集</v-btn>
+                </v-col>
+                <v-col cols="12" sm="1" md="1" align="center">
+                    <v-btn @click="openModal = true" width="100%" color="#F50057" style="color: white; font-weight: bold">削除</v-btn>
+                    <modal v-if="openModal" @close="openModal = false"></modal>
                 </v-col>
             </v-row>
         </v-container>
@@ -74,16 +77,20 @@
 
 <script>
 // @ is an alias to /src
-import HeaderItem from '../components/HeaderItem'
+import HeaderItem from '../components/HeaderItem';
+import Modal from "../components/Modal.vue";
 
 export default {
-  data: () => ({
-    
-  }),
-
-  name: "VerboseSdreen",
+  data () {
+    return {
+      openModal: false
+    }
+  },
   components: {
+    Modal,
     HeaderItem
-  }
+  },
+
+  name: "VerboseScreen",
 };
 </script>

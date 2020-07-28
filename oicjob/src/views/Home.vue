@@ -14,14 +14,10 @@
           <v-col cols="12" sm="6" md="6">
             <v-text-field
               v-model="search"
-              label="企業名を入力"
+              label="検索"
               append-icon="mdi-magnify"
               outlined
             ></v-text-field>
-          </v-col>
-          
-          <v-col cols="12" sm="3" md="3">
-            <v-btn x-large color="primary">検索</v-btn>
           </v-col>
         </v-row>
 
@@ -49,7 +45,6 @@
 
           <v-col cols="12" sm="4" md="4">
             <v-overflow-btn
-              v-model="search"
               class="my-2"
               :items="dropdown_eria"
               label="エリア"
@@ -73,7 +68,14 @@
           <v-data-table
             :headers="headers"
             :items="items"
+            item-key="name"
             :search="search"
+            @click:row="
+              (data) => {
+                $router.push(`/verbose_screen`)
+              }
+            "
+            id="table"
           ></v-data-table>
         </v-card>
       </v-row>
@@ -82,6 +84,13 @@
     </v-container>
   </v-content>
 </template>
+
+<style>
+#table td {
+  cursor: hand;
+  cursor: pointer;
+}
+</style>
 
 <script>
 // @ is an alias to /src
@@ -117,6 +126,7 @@ export default {
       { number: '008', name: '株式会社Daizo8', industry: 'IT', industries: 'システムエンジニア', eria: '島根県' },
     ]
   }),
+  
 
   name: "Home",
   components: {

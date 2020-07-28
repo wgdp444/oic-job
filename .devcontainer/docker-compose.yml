@@ -4,7 +4,7 @@ services:
     build: .
     ports:
       - "8080:8080"
-      - "5000:5000"
+    container_name: flask
     volumes:
       - ..:/workspace
     command: "sleep infinity"

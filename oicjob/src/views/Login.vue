@@ -18,7 +18,6 @@
           align="center"
         ></GoogleLogin>
         <GoogleLogin :params="params" :logoutButton="true">Logout</GoogleLogin>
-        <button v-on:click="test">test</button>
       </v-col>
     </v-row>
   </v-container>
@@ -59,9 +58,12 @@ export default {
           "token": googleUser.getAuthResponse().id_token
         })
         .then(response => {
-          if (response.data['result'] == "account found") {
+          console.log(response);
+          if (response.status == 200) {
+            localStorage.setItem('access_token', response.data['access_token']);
+            localStorage.setItem('refresh_token', response.data['refresh_token']);
             this.$router.replace("/");
-          }  else if (response.data['result'] == "account not found") {
+          } else if (response.status == 204) {
             this.$router.replace("/create_account");
           }
         })
@@ -73,15 +75,6 @@ export default {
     onFailure: function(googleUser) {
       console.log(googleUser.getAuthResponse().id_token);
     },
-    test: function() {
-      Vue.GoogleAuth.then(auth2 => {
-        console.log(auth2.isSignedIn.get());
-        // if (auth2.isSignedIn.get()) {
-          let user = auth2.currentUser.get();
-          console.log(user.getBasicProfile());
-        // }
-      });
-    }
   }
 };
 </script>

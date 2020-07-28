@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:12.18-alpine3.11
 
 ENV PROJECT_NAME "oicjob"
 

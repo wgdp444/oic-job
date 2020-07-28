@@ -31,7 +31,7 @@
     </v-card>
     <!-- <v-content>
       <HeaderItem />
-    </v-content> -->
+    </v-content>-->
   </v-app>
 </template>
 
@@ -46,49 +46,55 @@ export default {
     classList: ["無し", 1, 2, 3, 4],
     valid: true,
     classSelect: null,
-    subjectSelect: null
+    subjectSelect: null,
   }),
   methods: {
     //入力チェック
     validate() {
       if (this.$refs.form.validate()) {
-        Vue.GoogleAuth.then(auth2 => {
+        Vue.GoogleAuth.then((auth2) => {
           let user = auth2.currentUser.get();
           this.$axios
-            .post("/oicjob/api/create_account", {
+            .post("/oicjob/api/user/create", {
               token: user.getAuthResponse().id_token,
-              subject_id: "subjectSelect",
-              class_number: "classSelect"
+              is_admin: false,
+              subject_id: this.subjectSelect,
+              class_number: this.classSelect,
             })
-            .then(response => {
+            .then((response) => {
               console.log(response.data);
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
             });
         });
-        location.href = "/";
+        // location.href = "/";
       }
     },
   },
-  mounted: function() {
+  mounted: function () {
     //学科データ取得
-    this.$axios
-      .post("/oicjob/api/get_subject_all", null)
-      .then(response => {
-        console.log(response.data["subjects"]);
-        for (let subject of response.data["subjects"]) {
-          console.log(subject);
-          this.subjectList.push({
-            id: subject["id"],
-            name: subject["name"]
-          });
-        }
-        console.log(Object.values(this.subjectList));
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    Vue.GoogleAuth.then((auth2) => {
+      let user = auth2.currentUser.get();
+      this.$axios
+        .post("/oicjob/api/subject/gets", {
+          token: user.getAuthResponse().id_token,
+        })
+        .then((response) => {
+          console.log(response.data["subjects"]);
+          for (let subject of response.data["subjects"]) {
+            console.log(subject);
+            this.subjectList.push({
+              id: subject["id"],
+              name: subject["name"],
+            });
+          }
+          console.log(Object.values(this.subjectList));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   },
   name: "CreateAccount",
   // components: {

@@ -25,7 +25,8 @@ Vue.use(VueRouter)
   {
     path: '/create_account',
     name: 'CreateAccount',
-    component: CreateAccount
+    component: CreateAccount,
+    meta: {isBeforeCreateAccount: true}
   },
   {
     path: '/verbose_screen',
@@ -50,11 +51,15 @@ const router = new VueRouter({
   routes
 })
 
+// アクセス制限
 router.beforeEach((to, from, next) => {
   console.log(1)
   Vue.GoogleAuth.then(auth2 => {
-    if (to.matched.some(record => !record.meta.isPublic) && !auth2.isSignedIn.get()) {
+    // googleログインしていない場合 クソほど条件長くなったので要改善！！！！！！！！！！！！！！！！！！
+    if (to.matched.some(record => (!record.meta.isPublic && !record.meta.isBeforeCreateAccount)) && (!auth2.isSignedIn.get() || !localStorage.getItem('access_token'))) {
       next({ path: '/login', query: { redirect: to.fullPath }});
+    } else if (to.matched.some(record => record.meta.isBeforeCreateAccount) && localStorage.getItem('access_token') && auth2.isSignedIn.get()) {
+      next({ path: '/', query: { redirect: to.fullPath }});
     } else {
       next();
     }

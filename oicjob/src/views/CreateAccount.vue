@@ -62,7 +62,9 @@ export default {
               class_number: this.classSelect,
             })
             .then((response) => {
-              console.log(response.data);
+              if (response.status == 201) {
+                this.login();
+              }
             })
             .catch((err) => {
               console.log(err);
@@ -70,6 +72,34 @@ export default {
         });
         // location.href = "/";
       }
+    },
+    login() {
+      Vue.GoogleAuth.then((auth2) => {
+        let user = auth2.currentUser.get();
+        this.$axios
+          .post("/oicjob/api/login", {
+            token: user.getAuthResponse().id_token,
+          })
+          .then((login_res) => {
+            console.log(login_res);
+            if (login_res.status == 200) {
+              localStorage.setItem(
+                "access_token",
+                login_res.data["access_token"]
+              );
+              localStorage.setItem(
+                "refresh_token",
+                login_res.data["refresh_token"]
+              );
+              this.$router.replace("/");
+            } else if (login_res.status == 204) {
+              this.$router.replace("/create_account");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
     },
   },
   mounted: function () {

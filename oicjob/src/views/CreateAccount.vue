@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-card width="500px" class="mx-auto mt-12">
-
       <v-card-title>
         <h1 class="display-1">基本情報の登録</h1>
       </v-card-title>
@@ -10,6 +9,8 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-select
             v-model="subjectSelect"
+            item-text="name"
+            item-value="id"
             :items="subjectList"
             :rules="[v => !!v || '選択してください']"
             label="学科"
@@ -24,69 +25,74 @@
             required
           ></v-select>
 
-          <v-btn
-            :disabled="!valid"
-            class="info"
-            @click="validate" 
-            >登録
-          </v-btn>
+          <v-btn :disabled="!valid" class="info" @click="validate">登録</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
-    <v-content>
-      <HeaderItem/>
-    </v-content>
+    <!-- <v-content>
+      <HeaderItem />
+    </v-content> -->
   </v-app>
 </template>
 
 <script>
 // @ is an alias to /src
-import HeaderItem from '../components/HeaderItem'
+// import HeaderItem from "../components/HeaderItem";
+import Vue from "vue";
 
 export default {
   data: () => ({
     subjectList: [],
-    classList: [],
+    classList: ["無し", 1, 2, 3, 4],
     valid: true,
-    classSelect:null,
-    subjectSelect:null,
+    classSelect: null,
+    subjectSelect: null
   }),
-  methods:{
+  methods: {
     //入力チェック
-    validate () {
-        if(this.$refs.form.validate()){
-          
+    validate() {
+      if (this.$refs.form.validate()) {
+        Vue.GoogleAuth.then(auth2 => {
+          let user = auth2.currentUser.get();
           this.$axios
-          .post("/oicjob/api/create_account",{
-            classData: 'classSelect',
-            subjectData: 'subjectSelect',
-          })
-          .then(response => {
-          console.log(response.data);
-          })
-          .catch(err => {
-          console.log(err);
-          });
-          location.href = "/"
-        }
-      },
+            .post("/oicjob/api/create_account", {
+              token: user.getAuthResponse().id_token,
+              subject_id: "subjectSelect",
+              class_number: "classSelect"
+            })
+            .then(response => {
+              console.log(response.data);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        });
+        location.href = "/";
+      }
+    },
   },
-    mounted:function() {
-      //学科データ取得
-      this.$axios.post('/oicjob/api/get_subject_all')
+  mounted: function() {
+    //学科データ取得
+    this.$axios
+      .post("/oicjob/api/get_subject_all", null)
       .then(response => {
-        console.log(response.data)
-        this.subjectList = response.data;
+        console.log(response.data["subjects"]);
+        for (let subject of response.data["subjects"]) {
+          console.log(subject);
+          this.subjectList.push({
+            id: subject["id"],
+            name: subject["name"]
+          });
+        }
+        console.log(Object.values(this.subjectList));
       })
-      .catch( err => {
+      .catch(err => {
         console.log(err);
       });
-    },
-  
+  },
   name: "CreateAccount",
-  components: {
-    HeaderItem
-  }
-
+  // components: {
+  //   HeaderItem
+  // }
 };
 </script>

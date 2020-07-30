@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import CreateAccount from '../views/CreateAccount.vue'
 import VerboseScreen from '../views/VerboseScreen.vue'
 import Edit from '../views/Edit.vue'
+import Register from '../views/Register.vue'
 // import HeaderItem from '../components/HeaderItem.vue'
 
 Vue.use(VueRouter)
@@ -35,6 +36,11 @@ Vue.use(VueRouter)
     path: '/edit',
     name: 'Edit',
     component: Edit
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 ]
 

@@ -31,7 +31,7 @@
     </v-card>
     <!-- <v-content>
       <HeaderItem />
-    </v-content> -->
+    </v-content>-->
   </v-app>
 </template>
 
@@ -46,49 +46,85 @@ export default {
     classList: ["無し", 1, 2, 3, 4],
     valid: true,
     classSelect: null,
-    subjectSelect: null
+    subjectSelect: null,
   }),
   methods: {
     //入力チェック
     validate() {
       if (this.$refs.form.validate()) {
-        Vue.GoogleAuth.then(auth2 => {
+        Vue.GoogleAuth.then((auth2) => {
           let user = auth2.currentUser.get();
           this.$axios
-            .post("/oicjob/api/create_account", {
+            .post("/oicjob/api/user/create", {
               token: user.getAuthResponse().id_token,
-              subject_id: "subjectSelect",
-              class_number: "classSelect"
+              is_admin: false,
+              subject_id: this.subjectSelect,
+              class_number: this.classSelect,
             })
-            .then(response => {
-              console.log(response.data);
+            .then((response) => {
+              if (response.status == 201) {
+                this.login();
+              }
             })
-            .catch(err => {
+            .catch((err) => {
               console.log(err);
             });
         });
-        location.href = "/";
+        // location.href = "/";
       }
     },
-  },
-  mounted: function() {
-    //学科データ取得
-    this.$axios
-      .post("/oicjob/api/get_subject_all", null)
-      .then(response => {
-        console.log(response.data["subjects"]);
-        for (let subject of response.data["subjects"]) {
-          console.log(subject);
-          this.subjectList.push({
-            id: subject["id"],
-            name: subject["name"]
+    login() {
+      Vue.GoogleAuth.then((auth2) => {
+        let user = auth2.currentUser.get();
+        this.$axios
+          .post("/oicjob/api/login", {
+            token: user.getAuthResponse().id_token,
+          })
+          .then((login_res) => {
+            console.log(login_res);
+            if (login_res.status == 200) {
+              localStorage.setItem(
+                "access_token",
+                login_res.data["access_token"]
+              );
+              localStorage.setItem(
+                "refresh_token",
+                login_res.data["refresh_token"]
+              );
+              this.$router.replace("/");
+            } else if (login_res.status == 204) {
+              this.$router.replace("/create_account");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
           });
-        }
-        console.log(Object.values(this.subjectList));
-      })
-      .catch(err => {
-        console.log(err);
       });
+    },
+  },
+  mounted: function () {
+    //学科データ取得
+    Vue.GoogleAuth.then((auth2) => {
+      let user = auth2.currentUser.get();
+      this.$axios
+        .post("/oicjob/api/subject/gets", {
+          token: user.getAuthResponse().id_token,
+        })
+        .then((response) => {
+          console.log(response.data["subjects"]);
+          for (let subject of response.data["subjects"]) {
+            console.log(subject);
+            this.subjectList.push({
+              id: subject["id"],
+              name: subject["name"],
+            });
+          }
+          console.log(Object.values(this.subjectList));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   },
   name: "CreateAccount",
   // components: {

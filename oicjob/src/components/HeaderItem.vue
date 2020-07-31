@@ -41,12 +41,15 @@
 import Vue from "vue";
 export default {
   name: "HeaderItem",
-  data: function() {
+  data: function () {
     return {
       userImage: "None",
       userFirstName: "None",
       userLastName: "None",
-      userMenuItems: [{ title: "プロフィール", route: this.Logout }, { title: "ログアウト", route: this.Logout }]
+      userMenuItems: [
+        { title: "プロフィール", route: this.Logout },
+        { title: "ログアウト", route: this.Logout },
+      ],
     };
   },
   // components: {
@@ -59,11 +62,11 @@ export default {
   },
   watch: {
     // ルートが変更されたらこのメソッドを再び呼び出します
-    $route: "getUserProfile"
+    $route: "getUserProfile",
   },
   methods: {
     getUserProfile() {
-      Vue.GoogleAuth.then(auth2 => {
+      Vue.GoogleAuth.then((auth2) => {
         let user = auth2.currentUser.get();
         let userProfile = user.getBasicProfile();
         this.userImage = userProfile.getImageUrl();
@@ -72,12 +75,14 @@ export default {
       });
     },
     Logout() {
-      Vue.GoogleAuth.then(auth2 => {
-        auth2.signOut()
-    })
+      Vue.GoogleAuth.then((auth2) => {
+        auth2.signOut();
+      });
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
       this.$router.replace("/login");
-      this.$router.go({path: this.$router.currentRoute.path, force: true});
-    }
-  }
+      this.$router.go({ path: this.$router.currentRoute.path, force: true });
+    },
+  },
 };
 </script>

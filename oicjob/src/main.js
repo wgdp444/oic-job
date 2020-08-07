@@ -12,6 +12,7 @@ axios.defaults.headers.post["Content-Type"] =
   "application/json;charset=utf-8";
 axios.defaults.headers.post["Access-Control-Allow-Origin"] =
   "http://127.0.0.1:4649";
+  
 Vue.prototype.$axios = axios
 
 Vue.use(LoaderPlugin, {

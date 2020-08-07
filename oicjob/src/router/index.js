@@ -29,12 +29,12 @@ Vue.use(VueRouter)
     meta: {isBeforeCreateAccount: true}
   },
   {
-    path: '/verbose_screen',
+    path: '/verbose_screen/:id',
     name: 'VerboseScreen',
     component: VerboseScreen
   },
   {
-    path: '/edit',
+    path: '/edit/:id',
     name: 'Edit',
     component: Edit
   },

@@ -71,7 +71,7 @@
             :search="search"
             @click:row="
               (data) => {
-                $router.push(`/verbose_screen`)
+                $router.push('/verbose_screen/' + data.number)
               }
             "
             id="table"
@@ -165,14 +165,14 @@ export default {
     selected: [],
     // 本番でテストデータ削除
     jobofferList: [
-      { number: '001', name: '株式会社Daizo1', industry: 'IT', industries: 'システムエンジニア', eria: '岡山県' },
-      { number: '002', name: '株式会社Daizo2', industry: 'IT', industries: 'システムエンジニア', eria: '大阪府' },
-      { number: '003', name: '株式会社Daizo3', industry: 'IT', industries: 'システムエンジニア', eria: '東京都' },
-      { number: '004', name: '株式会社Daizo4', industry: 'IT', industries: 'システムエンジニア', eria: '沖縄県' },
-      { number: '005', name: '株式会社Daizo5', industry: 'IT', industries: 'システムエンジニア', eria: '北海道' },
-      { number: '006', name: '株式会社Daizo6', industry: 'IT', industries: 'システムエンジニア', eria: '広島県' },
-      { number: '007', name: '株式会社Daizo7', industry: 'IT', industries: 'システムエンジニア', eria: '鳥取県' },
-      { number: '008', name: '株式会社Daizo8', industry: 'IT', industries: 'システムエンジニア', eria: '島根県' },
+      // { number: '001', name: '株式会社Daizo1', industry: 'IT', industries: 'システムエンジニア', eria: '岡山県' },
+      // { number: '002', name: '株式会社Daizo2', industry: 'IT', industries: 'システムエンジニア', eria: '大阪府' },
+      // { number: '003', name: '株式会社Daizo3', industry: 'IT', industries: 'システムエンジニア', eria: '東京都' },
+      // { number: '004', name: '株式会社Daizo4', industry: 'IT', industries: 'システムエンジニア', eria: '沖縄県' },
+      // { number: '005', name: '株式会社Daizo5', industry: 'IT', industries: 'システムエンジニア', eria: '北海道' },
+      // { number: '006', name: '株式会社Daizo6', industry: 'IT', industries: 'システムエンジニア', eria: '広島県' },
+      // { number: '007', name: '株式会社Daizo7', industry: 'IT', industries: 'システムエンジニア', eria: '鳥取県' },
+      // { number: '008', name: '株式会社Daizo8', industry: 'IT', industries: 'システムエンジニア', eria: '島根県' },
     ],
   }),
   computed: {
@@ -191,13 +191,18 @@ export default {
     //学科データ取得
     Vue.GoogleAuth.then((auth2) => {
       let user = auth2.currentUser.get();
+      console.log(localStorage.getItem("access_token"));
       this.$axios
         .post(
           "/oicjob/api/joboffer/gets",
           {
             token: user.getAuthResponse().id_token,
           },
-          { Authorization: "Bearer " + localStorage.getItem("access_token") }
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
         )
         .then((response) => {
           // 求人がない場合は終了

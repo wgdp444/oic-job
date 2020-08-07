@@ -17,7 +17,7 @@
           :onFailure="onFailure"
           align="center"
         ></GoogleLogin>
-        <GoogleLogin :params="params" :logoutButton="true">Logout</GoogleLogin>
+        <!-- <GoogleLogin :params="params" :logoutButton="true">Logout</GoogleLogin> -->
       </v-col>
     </v-row>
   </v-container>
